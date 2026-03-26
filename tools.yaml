@@ -19,6 +19,6 @@ tools:
   get_uptime_metrics:
     description: |
       Provides uptime metrics for Everstake services.
-  get_networks:
+  get_chains:
     description: |
       Provides a list of supported blockchain networks by Everstake.

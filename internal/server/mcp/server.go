@@ -39,6 +39,9 @@ func New(cfg *config.ToolsConfig, dashboard *dashboard.Dashboard) (*MCPServer, e
 	}
 
 	s.AddTool(mcps.mcpConfig.GetApiDocs.ToTool(), mcps.getApiDocs)
+	s.AddTool(mcps.mcpConfig.GetContactInformation.ToTool(), mcps.getContactInformation)
+	s.AddTool(mcps.mcpConfig.GetUptimeMetrics.ToTool(), mcps.GetUptimeMetrics)
+	s.AddTool(mcps.mcpConfig.GetChains.ToTool(), mcps.GetChains)
 
 	return mcps, nil
 }
