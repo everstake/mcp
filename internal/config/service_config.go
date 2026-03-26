@@ -2,28 +2,19 @@ package config
 
 import (
 	"fmt"
-	"os"
-	"strconv"
+
+	"github.com/caarlos0/env"
 )
 
-const defaultPort = 8080
-
 type ServiceConfig struct {
-	Port int
+	Port         int    `env:"PORT" envDefault:"8080"`
+	DashboardUrl string `env:"DASHBOARD_URL,required" envDefault:"https://dashboard-api.everstake.one"`
 }
 
 func LoadServiceConfig() (ServiceConfig, error) {
-	port := defaultPort
-	if raw := os.Getenv("PORT"); raw != "" {
-		p, err := strconv.Atoi(raw)
-		if err != nil {
-			return ServiceConfig{}, fmt.Errorf("invalid PORT %q: %w", raw, err)
-		}
-		port = p
+	cfg := ServiceConfig{}
+	if err := env.Parse(&cfg); err != nil {
+		return ServiceConfig{}, fmt.Errorf("load config from env: %w", err)
 	}
-	return ServiceConfig{Port: port}, nil
-}
-
-func (c ServiceConfig) Addr() string {
-	return fmt.Sprintf(":%d", c.Port)
+	return cfg, nil
 }

@@ -5,26 +5,23 @@ import (
 
 	mcp_server "mcp-server"
 
-	"github.com/modelcontextprotocol/go-sdk/jsonschema"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 	"gopkg.in/yaml.v3"
 )
 
+type MCPConfig struct {
+	Tools ToolConfig `yaml:"tools"`
+}
+
 type ToolsConfig struct {
-	Tools []ToolConfig `yaml:"tools"`
+	GetApiDocs            ToolConfig `yaml:"get_api_docs"`
+	GetContactInformation ToolConfig `yaml:"get_contact_information"`
 }
 
 type ToolConfig struct {
-	Name        string      `yaml:"name"`
-	Description string      `yaml:"description"`
-	Args        []ArgConfig `yaml:"args"`
-}
-
-type ArgConfig struct {
-	Name        string `yaml:"name"`
-	Type        string `yaml:"type"`
-	Required    bool   `yaml:"required"`
-	Description string `yaml:"description"`
+	Name           string `yaml:"name"`
+	Description    string `yaml:"description"`
+	StaticResponse string `yaml:"static_response"`
 }
 
 func LoadMCPConfig() (*ToolsConfig, error) {
@@ -35,48 +32,12 @@ func LoadMCPConfig() (*ToolsConfig, error) {
 	return &cfg, nil
 }
 
-func (cfg *ToolsConfig) ToTools() []*mcp.Tool {
-	tools := make([]*mcp.Tool, 0, len(cfg.Tools))
-	for i := range cfg.Tools {
-		tools = append(tools, toTool(&cfg.Tools[i]))
-	}
-	return tools
-}
-
-func toTool(tc *ToolConfig) *mcp.Tool {
+func (tc *ToolConfig) ToTool() *mcp.Tool {
 	return &mcp.Tool{
 		Name:        tc.Name,
 		Description: tc.Description,
-		InputSchema: buildInputSchema(tc.Args),
+		InputSchema: map[string]any{"type": "object"}, // todo
 	}
 }
 
-func buildInputSchema(args []ArgConfig) *jsonschema.Schema {
-	properties := make(map[string]*jsonschema.Schema)
-	var required []string
-
-	for _, arg := range args {
-		prop := &jsonschema.Schema{Description: arg.Description}
-		switch arg.Type {
-		case "number":
-			prop.Type = "number"
-		case "boolean":
-			prop.Type = "boolean"
-		default: // "string"
-			prop.Type = "string"
-		}
-		properties[arg.Name] = prop
-		if arg.Required {
-			required = append(required, arg.Name)
-		}
-	}
-
-	schema := &jsonschema.Schema{Type: "object"}
-	if len(properties) > 0 {
-		schema.Properties = properties
-	}
-	if len(required) > 0 {
-		schema.Required = required
-	}
-	return schema
-}
+// func (tc *ToolConfig) GetInputSchema() interface{} {}

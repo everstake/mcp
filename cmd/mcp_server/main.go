@@ -1,18 +1,22 @@
 package main
 
 import (
-	"log/slog"
-	"net/http"
-	"os"
-
-	"github.com/modelcontextprotocol/go-sdk/mcp"
-
+	"context"
 	"mcp-server/internal/config"
-	"mcp-server/internal/tools"
+	"mcp-server/internal/server"
+	"mcp-server/internal/server/mcp"
+	"mcp-server/pkg/everstake/dashboard"
 	"mcp-server/pkg/log"
+	"os/signal"
+	"syscall"
+	"time"
 )
 
 func main() {
+	ctx := context.Background()
+	ctx, stop := signal.NotifyContext(ctx, syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
+
 	svcCfg, err := config.LoadServiceConfig()
 	if err != nil {
 		log.Logger.Fatal("failed to load service config", log.E(err))
@@ -23,33 +27,24 @@ func main() {
 		log.Logger.Fatal("failed to load mcp config", log.E(err))
 	}
 
-	s := mcp.NewServer(&mcp.Implementation{
-		Name:    "Everstake MCP",
-		Version: "1.0.0",
-	}, nil)
+	dashboard := dashboard.NewDashboard(svcCfg.DashboardUrl)
 
-	handlers := map[string]mcp.ToolHandler{
-		"get_api_docs": tools.HandleGetAPIDocs,
+	mcps, err := mcp.New(mcpCfg, dashboard)
+	if err != nil {
+		log.Logger.Fatal("failed to create mcp server", log.E(err))
 	}
 
-	for _, tool := range mcpCfg.ToTools() {
-		h, ok := handlers[tool.Name]
-		if !ok {
-			slog.Warn("no handler registered for tool", "tool", tool.Name)
-			continue
+	svc := server.New(svcCfg, mcps)
+
+	go func() {
+		err := svc.Run(ctx)
+		if err != nil {
+			log.Logger.Error("http server: ServeAPI", log.E(err))
 		}
-		s.AddTool(tool, h)
-	}
+		stop()
+	}()
 
-	addr := svcCfg.Addr()
-	slog.Info("starting Everstake MCP server", "addr", addr)
-
-	handler := mcp.NewSSEHandler(func(_ *http.Request) *mcp.Server {
-		return s
-	})
-
-	if err := http.ListenAndServe(addr, handler); err != nil {
-		slog.Error("server error", "err", err)
-		os.Exit(1)
-	}
+	<-ctx.Done()
+	<-time.After(time.Second * 10)
+	log.Logger.Info("Terminated by timeout")
 }

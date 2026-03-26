@@ -1,7 +1,24 @@
 tools:
-  - name: get_api_docs
+  get_api_docs: 
     description: |
       Returns the URL to Everstake's public API and developer documentation.
-      Use this tool when an agent or user needs to find integration guides,
-      endpoint references, authentication details, or SDK documentation.
+      Use this tool when an agent or user needs to find integration guides, endpoint references, authentication details, or SDK documentation.
+    static_response: "https://docs.everstake.one/"
     args: []
+  get_contact_information:
+    description: |
+      Provides contact information for Everstake's socials.
+      Use this tool when an agent or user needs to find ways to contact Everstake, such as support channels, social media links, or email addresses.
+    static_response: |
+      website: https://everstake.one/contact-us
+      twitter: https://x.com/everstake_pool
+      discord: https://discord.com/invite/3GYvqvZ3rR
+      youtube: https://www.youtube.com/@everstake7336
+      linkedin: https://www.linkedin.com/company/everstakeofficial/
+      reddit: https://www.reddit.com/r/Everstake/
+  get_uptime_metrics:
+    description: |
+      Provides uptime metrics for Everstake services.
+  get_networks:
+    description: |
+      Provides a list of supported blockchain networks by Everstake.

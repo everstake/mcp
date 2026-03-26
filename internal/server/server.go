@@ -1,59 +1,66 @@
 package server
 
 import (
-	"log/slog"
+	"context"
+	"errors"
+	"fmt"
 	"net/http"
-	"os"
+	"time"
 
-	"github.com/modelcontextprotocol/go-sdk/mcp"
+	"github.com/gin-gonic/gin"
 
 	"mcp-server/internal/config"
-	"mcp-server/internal/tools"
+	servermcp "mcp-server/internal/server/mcp"
 	"mcp-server/pkg/log"
 )
 
 type Server struct {
 	serverCfg config.ServiceConfig
-	mcpConfig *config.ToolsConfig
+	mcpServer *servermcp.MCPServer
 }
 
-func New(serverCfg config.ServiceConfig, mcpConfig *config.ToolsConfig) *Server {
+func New(serverCfg config.ServiceConfig, mcpServer *servermcp.MCPServer) *Server {
 	return &Server{
 		serverCfg: serverCfg,
-		mcpConfig: mcpConfig,
+		mcpServer: mcpServer,
 	}
 }
 
-func (s *Server) Run() error {
-	mcpServer := mcp.NewServer(&mcp.Implementation{
-		Name:    "Everstake MCP",
-		Version: "1.0.0",
-	}, nil)
+func (s *Server) Run(ctx context.Context) error {
+	r := s.initRouter(s.mcpServer)
 
-	handlers := map[string]mcp.ToolHandler{
-		"get_api_docs": tools.HandleGetAPIDocs,
+	addr := fmt.Sprintf(":%d", s.serverCfg.Port)
+	srv := &http.Server{
+		Addr:    addr,
+		Handler: r,
 	}
 
-	for _, tool := range s.mcpConfig.ToTools() {
-		h, ok := handlers[tool.Name]
-		if !ok {
-			slog.Warn("no handler registered for tool", "tool", tool.Name)
-			continue
+	go func() {
+		<-ctx.Done()
+		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+		if err := srv.Shutdown(shutdownCtx); err != nil {
+			log.Logger.Error("graceful shutdown failed", log.E(err))
 		}
-		mcpServer.AddTool(tool, h)
+	}()
+
+	log.Logger.Info("starting server", log.V("addr", addr))
+
+	if err := srv.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
+		return err
 	}
+	return nil
+}
 
-	addr := s.serverCfg.Addr()
-	slog.Info("starting Everstake MCP server", "addr", addr)
+func (s *Server) initRouter(mcpSrv *servermcp.MCPServer) *gin.Engine {
+	r := gin.New()
+	r.Use(gin.Recovery())
 
-	handler := mcp.NewSSEHandler(func(_ *http.Request) *mcp.Server {
-		return mcpServer
+	r.Any("/", gin.WrapH(mcpSrv.Handler()))
+
+	r.GET("/health", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"status": "ok"})
 	})
 
-	if err := http.ListenAndServe(addr, handler); err != nil {
-		log.Logger.Error("server error", log.E(err))
-		os.Exit(1)
-	}
-
-	return nil
+	return r
 }
