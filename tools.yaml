@@ -1,0 +1,7 @@
+tools:
+  - name: get_api_docs
+    description: |
+      Returns the URL to Everstake's public API and developer documentation.
+      Use this tool when an agent or user needs to find integration guides,
+      endpoint references, authentication details, or SDK documentation.
+    args: []
