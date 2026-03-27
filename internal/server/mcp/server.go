@@ -30,6 +30,7 @@ func New(cfg *config.ToolsConfig, dashboard *dashboard.Dashboard) (*MCPServer, e
 	s := sdkmcp.NewServer(&sdkmcp.Implementation{
 		Name:    mcp_server.ServiceName,
 		Version: mcp_server.Version,
+		// Icons:   []sdkmcp.Icon{}, TODO
 	}, nil)
 	mcps := &MCPServer{
 		s:         s,

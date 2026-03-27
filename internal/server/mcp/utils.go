@@ -21,6 +21,6 @@ func newTextResult(response string) *sdkmcp.CallToolResult {
 
 func newJsonResult(obj any) *sdkmcp.CallToolResult {
 	return &sdkmcp.CallToolResult{
-		StructuredContent: obj,
+		StructuredContent: map[string]any{"data": obj},
 	}
 }
