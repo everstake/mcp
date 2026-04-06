@@ -14,4 +14,8 @@ const (
 
 	// mcp server cache
 	DashboardCacheTtl = 10 * time.Minute
+
+	// rate limiter
+	RateLimitRefillPerSecond      = 0.5
+	RateLimitMaxRequestsPerMinute = 30
 )

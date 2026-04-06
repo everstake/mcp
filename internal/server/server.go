@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	mcp_server "mcp-server"
 	"net/http"
 	"time"
 
@@ -11,6 +12,7 @@ import (
 
 	"mcp-server/internal/config"
 	servermcp "mcp-server/internal/server/mcp"
+	"mcp-server/internal/server/middleware"
 	"mcp-server/pkg/log"
 )
 
@@ -55,6 +57,11 @@ func (s *Server) Run(ctx context.Context) error {
 func (s *Server) initRouter(mcpSrv *servermcp.MCPServer) *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Recovery())
+
+	r.Use(middleware.RateLimit(
+		mcp_server.RateLimitRefillPerSecond,
+		mcp_server.RateLimitMaxRequestsPerMinute,
+	))
 
 	r.Any("/", gin.WrapH(mcpSrv.Handler()))
 

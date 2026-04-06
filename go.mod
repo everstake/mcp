@@ -9,6 +9,7 @@ require (
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.9.4
+	golang.org/x/time v0.15.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
