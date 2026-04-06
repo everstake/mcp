@@ -12,11 +12,11 @@ trigger_job:
     - if: $CI_COMMIT_BRANCH =~ "/deploy-*/"
       when: on_success
   trigger:
-    project: dev/main/everstake/mcp-server
+    project: dev/main/everstake/mcp-server-cicd
     strategy: depend
 
 include:
-  - project: dev/main/everstake/mcp-server
+  - project: dev/main/everstake/mcp-server-cicd
     ref: main
     file:
       - .trigger.gitlab-ci.yml
