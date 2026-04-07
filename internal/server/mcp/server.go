@@ -49,6 +49,7 @@ func New(mcpCfg *config.ToolsConfig, dashboard *dashboard.Dashboard) (*MCPServer
 	s.AddTool(mcps.mcpConfig.GetSecurityProfile.ToTool(), staticTextTool(mcpCfg.GetSecurityProfile.StaticResponse))
 	s.AddTool(mcps.mcpConfig.GetIntegrations.ToTool(), staticTextTool(mcpCfg.GetIntegrations.StaticResponse))
 	addTool(s, mcps.mcpConfig.StakingCalculator.ToTool(), mcps.StakingCalculator)
+	addTool(s, mcps.mcpConfig.RequestIntegration.ToTool(), mcps.RequestIntegration)
 
 	return mcps, nil
 }

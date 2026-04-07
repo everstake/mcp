@@ -101,6 +101,25 @@ func (s *MCPServer) StakingCalculator(_ context.Context, _ *sdkmcp.CallToolReque
 	return nil, response, nil
 }
 
+func (s *MCPServer) RequestIntegration(_ context.Context, _ *sdkmcp.CallToolRequest, input dashboard.PDLead) (*sdkmcp.CallToolResult, any, error) {
+	if input.LeadSource == "" {
+		input.LeadSource = "MCP service (source not specified)"
+	}
+
+	err := s.dashboard.CreatePDLead(input)
+	if err != nil {
+		log.Logger.Error("failed to create pd lead", log.E(err))
+		return &sdkmcp.CallToolResult{
+			IsError: true,
+			Content: []sdkmcp.Content{
+				&sdkmcp.TextContent{Text: "Submission failed. Please try again or contact Everstake directly at https://everstake.one/contact-us"},
+			},
+		}, nil, nil
+	}
+
+	return newTextResult("Your inquiry has been submitted. Everstake's team will be in touch shortly."), nil, nil
+}
+
 func (s *MCPServer) getChains() ([]dashboard.Chain, error) {
 	if cached, found := s.cache.Get(chainsCacheKey); found {
 		return cached.([]dashboard.Chain), nil
