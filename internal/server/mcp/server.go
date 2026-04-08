@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	defaultTtl = 30 * time.Minute
+	defaultTTL = 30 * time.Minute
 )
 
 // Server wraps the MCP SDK server and exposes an http.Handler.
@@ -26,7 +26,7 @@ type MCPServer struct {
 	cache *cache.Cache
 }
 
-func New(mcpCfg *config.ToolsConfig, dashboard *dashboard.Dashboard) (*MCPServer, error) {
+func New(mcpCfg *config.ToolsConfig, dashboardClient *dashboard.Dashboard) (*MCPServer, error) {
 	s := sdkmcp.NewServer(&sdkmcp.Implementation{
 		Name:    mcp_server.ServiceName,
 		Version: mcp_server.Version,
@@ -35,8 +35,8 @@ func New(mcpCfg *config.ToolsConfig, dashboard *dashboard.Dashboard) (*MCPServer
 	mcps := &MCPServer{
 		s:         s,
 		mcpConfig: mcpCfg,
-		dashboard: dashboard,
-		cache:     cache.New(defaultTtl, defaultTtl),
+		dashboard: dashboardClient,
+		cache:     cache.New(defaultTTL, defaultTTL),
 	}
 
 	s.AddTool(mcps.mcpConfig.GetCompanyProfile.ToTool(), staticTextTool(mcpCfg.GetCompanyProfile.StaticResponse))

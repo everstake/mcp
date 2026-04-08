@@ -17,17 +17,17 @@ type (
 	}
 
 	ToolsConfig struct {
-		GetCompanyProfile      ToolConfig `yaml:"get_company_profile"`
-		GetDeveloperDocs       ToolConfig `yaml:"get_developer_docs"`
-		GetContactInformation  ToolConfig `yaml:"get_contact_information"`
-		GetUptimeMetrics       ToolConfig `yaml:"get_uptime_metrics"`
-		GetChains              ToolConfig `yaml:"get_chains"`
-		GetProducts            ToolConfig `yaml:"get_products"`
-		GetSolutions           ToolConfig `yaml:"get_solutions"`
-		GetSecurityProfile     ToolConfig `yaml:"get_security_profile"`
-		GetIntegrations        ToolConfig `yaml:"get_integrations"`
-		StakingCalculator      ToolConfig `yaml:"staking_calculator"`
-		RequestIntegration     ToolConfig `yaml:"request_integration"`
+		GetCompanyProfile     ToolConfig `yaml:"get_company_profile"`
+		GetDeveloperDocs      ToolConfig `yaml:"get_developer_docs"`
+		GetContactInformation ToolConfig `yaml:"get_contact_information"`
+		GetUptimeMetrics      ToolConfig `yaml:"get_uptime_metrics"`
+		GetChains             ToolConfig `yaml:"get_chains"`
+		GetProducts           ToolConfig `yaml:"get_products"`
+		GetSolutions          ToolConfig `yaml:"get_solutions"`
+		GetSecurityProfile    ToolConfig `yaml:"get_security_profile"`
+		GetIntegrations       ToolConfig `yaml:"get_integrations"`
+		StakingCalculator     ToolConfig `yaml:"staking_calculator"`
+		RequestIntegration    ToolConfig `yaml:"request_integration"`
 	}
 
 	ToolAnnotations struct {
@@ -38,11 +38,11 @@ type (
 	}
 
 	ToolConfig struct {
-		ToolAnnotations `yaml:",inline"`
+		InputSchema     map[string]interface{} `yaml:"input_schema"`
 		Name            string                 `yaml:"-"`
 		Description     string                 `yaml:"description"`
 		StaticResponse  string                 `yaml:"static_response"`
-		InputSchema     map[string]interface{} `yaml:"input_schema"`
+		ToolAnnotations `yaml:",inline"`
 	}
 )
 

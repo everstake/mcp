@@ -219,7 +219,8 @@ linters:
     staticcheck:
       checks:
         - all
-        - -ST1005
+        # - -ST1005
+        - -ST1003  # Allow underscores in package names
   exclusions:
     generated: lax
     presets:

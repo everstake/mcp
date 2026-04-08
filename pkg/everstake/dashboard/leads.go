@@ -2,6 +2,7 @@ package dashboard
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"net/http"
 
@@ -10,8 +11,8 @@ import (
 
 type PDLead struct {
 	FirstName              string `json:"first_name" description:"First name of the contact" required:"true"`
-	LastName               string `json:"last_name" description:"Last name of the contact" required:"true"`
-	WorkEmail              string `json:"work_email" description:"Work email address of the contact" required:"true"`
+	LastName               string `json:"last_name" description:"Last name of the contact" required:"false"`
+	Email                  string `json:"email" description:"Work email address of the contact" required:"true"`
 	CompanyName            string `json:"company_name,omitempty" description:"Name of the company"`
 	CompanyType            string `json:"company_type,omitempty" description:"Type of company" enum:"[Custodian,Wallet,Exchange,Asset Manager,Treasury,Family Office,Individual Investor,Other"`
 	CompanySite            string `json:"company_site,omitempty" description:"Company website URL (optional, can be inferred from email domain)"`
@@ -26,13 +27,19 @@ type PDLead struct {
 }
 
 // CreatePDLead submits a lead to the dashboard backend. The backend returns 200 with an empty body on success.
-func (d *Dashboard) CreatePDLead(lead PDLead) error {
+func (d *Dashboard) CreatePDLead(ctx context.Context, lead *PDLead) error {
 	payload, err := json.Marshal(lead)
 	if err != nil {
 		return errors.Wrap(err, "failed to marshal lead")
 	}
 
-	resp, err := d.cli.Post(d.url+"/pd/lead", "application/json", bytes.NewReader(payload))
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, d.url+"/pd/lead", bytes.NewReader(payload))
+	if err != nil {
+		return errors.Wrap(err, "failed to create request")
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := d.cli.Do(req)
 	if err != nil {
 		return errors.Wrap(err, "failed to send request to dashboard")
 	}
