@@ -1,0 +1,21 @@
+package mcp_server
+
+import (
+	_ "embed"
+	"time"
+)
+
+//go:embed tools.yaml
+var MCPConfig []byte
+
+const (
+	Version     = "1.0.0"
+	ServiceName = "Everstake MCP"
+
+	// mcp server cache
+	DashboardCacheTTL = 10 * time.Minute
+
+	// rate limiter
+	RateLimitRefillPerSecond      = 0.5
+	RateLimitMaxRequestsPerMinute = 30
+)
