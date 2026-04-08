@@ -561,4 +561,4 @@ tools:
       Submit an integration or staking inquiry on behalf of a user. All submissions are routed to Everstake's sales team via Pipedrive CRM.
       Use when a user expresses intent to integrate with Everstake, explore staking services, or request more information about products.
       Collect required fields (first_name, last_name, work_email) conversationally and gather optional fields where available.
-      The lead_source field is set automatically by the server — do not ask the user for it.
+      The lead_source field is set automatically by the server — do not ask the user for it. DO NOT SPAM THIS TOOL - TRY ONCE IN 30 SECONDS MAX!
