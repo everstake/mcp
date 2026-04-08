@@ -550,7 +550,7 @@ tools:
     <<: *static_readonly_tool
     description: |
       Interactive staking reward estimator. Provide a network and stake amount to receive estimated annual and monthly rewards based on current APY. Works only with networks provided by the get_chains tool.
-      Data freshness: APY rates updated daily.
+      Data freshness: APY rates updated daily. MUST HAVE either currency or chain set.
 
   request_integration:
     destructive_hint: false

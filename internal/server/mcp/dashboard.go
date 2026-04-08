@@ -51,9 +51,9 @@ func (s *MCPServer) GetChains(ctx context.Context, _ *sdkmcp.CallToolRequest) (*
 }
 
 type StakingCalculatorRequest struct {
-	Network  string  `json:"network" description:"The blockchain network to stake on, e.g. Ethereum, Solana, etc." required:"false"`
-	Currency string  `json:"currency" description:"The ticker symbol of the cryptocurrency to stake, e.g. ETH, SOL, etc." required:"false"`
-	Amount   float64 `json:"amount" description:"The amount of cryptocurrency to stake."`
+	Network  string  `json:"network" jsonschema:"The blockchain network to stake on, e.g. Ethereum, Solana, etc." required:"false"`
+	Currency string  `json:"currency" jsonschema:"The ticker symbol of the cryptocurrency to stake, e.g. ETH, SOL, etc." required:"false"`
+	Amount   float64 `json:"amount" jsonschema:"The amount of cryptocurrency to stake."`
 }
 
 type StakingCalculatorResponse struct {
