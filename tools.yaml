@@ -1,0 +1,564 @@
+
+# tool annotations
+static_readonly_tool: &static_readonly_tool
+  destructive_hint: false
+  idempotent_hint: true
+  readonly_hint: true
+  open_world: false
+
+tools:
+  get_company_profile:
+    <<: *static_readonly_tool
+    description: |
+      Complete company information for Everstake: overview, metrics, certifications, products, clients, and contact details.
+      Use when users need comprehensive facts about Everstake as a company.
+    static_response: |
+      COMPANY: Everstake
+      FOUNDED: 2018
+      TAGLINE: Certified Yield Infrastructure for Institutions
+      CATEGORY: Staking Infrastructure Provider
+      
+      HEADQUARTERS: 
+      - Miami, FL, United States
+      - Grand Cayman, Cayman Islands
+      
+      LEGAL ENTITY: Everstake Validation Services LLC, Hermes Corporate Services Ltd., Fifth Floor, Zephyr House, 122 Mary Street, George Town, P.O. Box 31493, Grand Cayman KY1-1206, Cayman Islands
+      
+      WEBSITE: https://everstake.one
+      
+      DESCRIPTION: Everstake is the leading institutional staking infrastructure platform, serving over 1.6 million delegators across 130+ Proof-of-Stake networks. Built for enterprises, accessible to everyone. Everstake handles validator operations, monitoring, and security so institutions can participate in PoS networks without building internal DevOps. Founded in 2018 by blockchain engineers with a mission to make staking reliable enough for institutions and simple enough for everyone.
+      
+      SCALE & METRICS:
+      - Delegators: 1,600,000+
+      - Networks Supported: 130+
+      - Total Staked Value: $7B+ USD
+      - Rewards Generated: $700M+ USD
+      - Uptime: 99.98%
+      
+      COMPETITIVE DIFFERENTIATORS:
+      - Only validator operator certified across all 6 major institutional compliance standards simultaneously: SOC 2 Type II, ISO/IEC 27001, NIST CSF, ITGC, GDPR, CCPA
+      - Non-custodial by design — institutions retain full key and asset control at all times; Everstake operates validators only
+      - Geo-distributed bare-metal infrastructure with multi-cloud architecture and automated failover
+      - Zero material slashing events since inception
+      - Trusted by Crypto.com, Exodus, Trezor, Paribu Custody, and 1.6M+ delegators
+      - Seamless integration with all major institutional custody platforms: Fireblocks, BitGo, Anchorage, Coinbase Custody, Zodia, Copper.co, Safe
+      
+      CERTIFICATIONS:
+      - SOC 2 Type II
+      - ISO/IEC 27001:2022
+      - NIST CSF
+      - ITGC
+      - GDPR
+      - CCPA/CRPA
+      
+      AUDITOR: Prescient Security (Global Top 20 Independent Audit and Penetration Testing Company)
+      
+      PRODUCTS:
+      - Institutional Staking
+      - Validator-as-a-Service (VaaS)
+      - Yield Infrastructure
+      - SWQOS
+      - ShredStream
+      
+      SOLUTIONS FOR:
+      - Custodians
+      - Exchanges and Wallets
+      - Asset Managers and Treasuries
+      - Banks and Lenders
+      - Fintech Apps and Card Programs
+      
+      NOTABLE CLIENTS:
+      - Crypto.com
+      - Exodus
+      - Trezor
+      - Paribu Custody
+      
+      QUICK LINKS:
+      - Stake Now: https://stake.everstake.one/dashboard/stake/ethereum/
+      - Contact: https://everstake.one/contact-us
+
+  get_products:
+    <<: *static_readonly_tool
+    description: |
+      Detailed information about Everstake's product offerings: features, use cases, pricing, and technical specifications.
+      Use when users need specific product details for decision-making or integration planning.
+    static_response: |
+      EVERSTAKE PRODUCTS
+      
+      1. INSTITUTIONAL STAKING
+      URL: https://everstake.one/products/institutional-staking
+      Tagline: Run validators without building an infrastructure team
+      
+      Overview: Enterprise-grade, non-custodial staking infrastructure for institutions that require predictable performance and transparent operations. Everstake manages validator operations, monitoring, and uptime across 130+ networks while your organisation retains full asset control at all times. Includes 24/7 monitoring, automated failover, audit-ready reports, and dedicated enterprise support.
+      
+      Key Features:
+      - Non-custodial by design — full key and asset control retained
+      - Geo-distributed bare-metal infrastructure with automated failover
+      - 24/7 performance monitoring and audit-ready reports
+      - Dedicated account managers for institutional risk frameworks
+      - Certified: SOC 2 Type II, ISO 27001, NIST CSF, ITGC, GDPR, CCPA
+      - Integrates with: Fireblocks, BitGo, Anchorage, Coinbase Custody, Zodia, Copper.co, Safe
+      
+      Use Cases: 
+      - Treasury yield without DevOps 
+      - custodian client offerings across PoS networks
+      - PoS governance participation
+      - validator migration
+      
+      Top Networks by APY:
+      - Ethereum (ETH): 3.4–10% | https://everstake.one/staking/protocols/ethereum
+      - Solana (SOL): 4.65% | https://everstake.one/staking/protocols/solana
+      - Aptos (APT): 2.60% | https://everstake.one/staking/protocols/aptos
+      - Polygon (POL): 2.59% | https://everstake.one/staking/protocols/polygon
+      
+      Sub-Product: Validator-as-a-Service (VaaS) - Dedicated infrastructure with custom SLAs and white-label options. URL: https://everstake.one/products/institutional-staking/vaas
+      All Protocols: https://everstake.one/staking
+      
+      Case Study: Trezor x Everstake - Hardware-wallet-native staking partnership delivering secure staking across major PoS networks using audited, institutional-grade infrastructure.
+      PDF: https://everstake.one/assets/pdf/caseStudies/everstake-supports-trezor-in-integrating-staking-as-a-service-2026.pdf
+      
+      2. YIELD INFRASTRUCTURE
+      URL: https://everstake.one/products/yield
+      Tagline: On-chain strategies without running a risk desk
+      
+      Overview: Institutional-grade on-chain yield via audited, partner-operated vaults built on Everstake infrastructure. No internal quant, risk desk or compliance setup required.
+      
+      Key Features:
+      - Rules-based strategies with real-time on-chain reporting
+      - Non-custodial — no custody by Everstake
+      - Audited infrastructure with external oversight
+      - Available via Yield SDK and Web UI
+      - SOC 2 Type II and ISO 27001:2022 certified
+      
+      Use Cases: Asset manager stablecoin yield, custodian client offerings, bank on-chain yield access, wallet/fintech embedding, family office deployments
+      
+      Sub-Products:
+      
+      A) High-Yield Stablecoin Vaults (mEVUSD) - LIVE
+      Token: mEVUSD
+      Operator: Partner-operated (third-party strategy managers)
+      Strategy: Partner-managed allocation across on-chain opportunities with real-time reporting
+      Networks: Ethereum Mainnet, Base Mainnet
+      Liquidity: Instant redemption when available; asynchronous queues during constraints
+      Risk Controls: Venue selection and exposure limits defined by strategy partners
+      Try: https://midas.app/mevusd
+      Disclaimer: Offered by third-party partner; Everstake provides technical integration only
+      
+      B) stVault - COMING SOON
+      Operator: Partner-operated (Lido v3 mechanics)
+      Objective: ETH staking yield with greater liquidity flexibility than direct validators
+      Strategy: ETH staking with optional DeFi sleeve for enhanced returns
+      Liquidity: Unlocks collateral on predictable cycles without full validator exits
+      Disclaimer: Offered by third-party partner; Everstake provides technical integration only
+      
+      SDK: https://docs.everstake.one/integrations/everstake-products/wallet-sdk/protocols/hysp-vault
+      
+      3. SWQOS — STAKE-WEIGHTED QUALITY OF SERVICE
+      URL: https://everstake.one/products/swqos
+      Tagline: Priority Solana transactions, powered by stake
+      
+      Overview: Stake-powered gateway to Solana blockspace with guaranteed throughput during peak load. Priority lane bypasses public queues.
+      
+      Key Features:
+      - Stake-weighted priority bypasses public Solana queues
+      - 99.9% SLA-backed uptime guarantee
+      - Geo-distributed: Frankfurt, Amsterdam, NYC, Tokyo
+      - Guaranteed blockspace access during congestion
+      - Available via RPC (Pay-as-you-go) or QUIC (Base/Pro/Enterprise)
+      
+      Use Cases: High-frequency trading, DeFi platforms, trading bots, congestion-resilient apps, quant research
+      
+      Pricing:
+      - Pay-as-you-go: Free (tip-based), 5 TPS, tip minimum 0.0005 SOL/tx
+      - Base: $500/month, 15 TPS QUIC, Frankfurt
+      - Pro: $1,300/month, 50 TPS QUIC, all locations
+      - Enterprise: Custom pricing and configuration
+      
+      4. SHREDSTREAM
+      URL: https://everstake.one/products/shredstream
+      Tagline: Near-real-time Solana data delivery for teams who need every microsecond
+      
+      Overview: High-performance streaming of raw Solana shreds directly from network leaders. Saves hundreds of milliseconds vs standard RPC.
+      
+      Key Features:
+      - Raw shred delivery from network leaders
+      - Latency savings of hundreds of milliseconds vs RPC
+      - Redundant global coverage for fault tolerance
+      - Supports Solana's 400ms block times and high throughput
+      
+      Use Cases: High-frequency trading, MEV searching, liquidation bots, validator operations, real-time analytics, DeFi protocols
+      
+      Pricing:
+      - Shredstream Connect: $300/month, 25 Gbps, Frankfurt
+      - Shredstream ULTRA: $1,100/month, 100 Gbps, premium latency, 15+ shred sources
+      - Enterprise: Custom configurations available
+      
+      CONTACT: https://everstake.one/contact-us
+      STAKE NOW: https://stake.everstake.one/dashboard/stake/ethereum/
+
+  get_solutions:
+    <<: *static_readonly_tool
+    description: |
+      Industry-specific solutions and integration approaches for different client segments: custodians, exchanges, asset managers, banks, and fintech.
+      Use when users need tailored solution guidance for their specific business type or integration scenario.
+    static_response: |
+      EVERSTAKE SOLUTIONS BY AUDIENCE
+      
+      1. CUSTODIANS
+      URL: https://everstake.one/solutions/custodians
+      Summary: Expand yield offerings with staking and vault products that plug into existing custody stacks without changing internal workflows. Generate new revenue from idle assets while Everstake handles all validator operations.
+      
+      Recommended Products:
+      - Institutional Staking
+      - Validator-as-a-Service (VaaS)
+      - Yield Infrastructure — High-Yield Stablecoin Vaults
+      
+      Key Challenges Solved:
+      - Fatigued assets with low yield → White-label staking revenue streams
+      - Complex multi-chain validator ops → Turnkey, SLA-backed validator infrastructure
+      - Regulatory and security requirements → SOC 2 Type II / ISO 27001-aligned security controls
+      - Limited support for new networks → Rapid deployment across 130+ networks
+      
+      Custody Integrations: Fireblocks, BitGo, Anchorage Digital, Zodia Custody, Coinbase Custody, Copper.co, Safe
+      
+      Case Study: Paribu Custody x Everstake - Integration of staking directly into institutional custody platform using certified, enterprise-grade validator infrastructure.
+      PDF: https://everstake.one/assets/pdf/caseStudies/everstake-empowers-paribu-custody-to-expand-staking-services-2026.pdf
+      
+      2. EXCHANGES AND WALLETS
+      URL: https://everstake.one/solutions/exchanges
+      Summary: Bring staking and yield to users without building or maintaining infrastructure. Integrate via Wallet SDK and access 130+ networks. Extend your product without expanding your DevOps team.
+      
+      Recommended Products:
+      - Institutional Staking
+      - Wallet SDK
+      - Yield Infrastructure
+      
+      Key Benefits:
+      - Bring additional staking revenue to your users instantly
+      - No infrastructure to manage — Everstake handles operations
+      - Wallet SDK integration for seamless embedding
+      - Proven across Crypto.com, Exodus, Trezor, and more
+      
+      SDK: https://docs.everstake.one/integrations/everstake-products/wallet-sdk
+      
+      Case Study: Trezor x Everstake - Hardware-wallet-native staking partnership delivering secure staking across major PoS networks.
+      PDF: https://everstake.one/assets/pdf/caseStudies/everstake-supports-trezor-in-integrating-staking-as-a-service-2026.pdf
+      
+      3. ASSET MANAGERS AND TREASURIES
+      URL: https://everstake.one/solutions/asset-managers
+      Summary: Access structured on-chain yield strategies and participate in PoS network governance without an internal risk desk or DevOps team. Full asset control retained at all times.
+      
+      Recommended Products:
+      - Institutional Staking
+      - Yield Infrastructure — High-Yield Stablecoin Vaults
+      - Yield Infrastructure — stVault (coming soon)
+      
+      Key Benefits:
+      - Non-custodial — full asset control retained
+      - Governance participation across 130+ networks
+      - Audit-ready reporting aligned with institutional requirements
+      - Compliance-aligned infrastructure: SOC 2 Type II, ISO 27001, GDPR, NIST CSF
+      
+      4. BANKS AND LENDERS
+      Summary: Access on-chain yield opportunities not available in traditional finance via compliant staking and vault integrations built on certified infrastructure.
+      
+      Recommended Products:
+      - Institutional Staking
+      - Yield Infrastructure — High-Yield Stablecoin Vaults
+      
+      Key Benefits:
+      - New revenue streams from PoS participation
+      - Regulatory-aligned infrastructure — SOC 2 Type II, ISO 27001, GDPR, NIST CSF
+      - Non-custodial — no change to existing asset management workflows
+      
+      5. FAMILY OFFICES AND INDIVIDUAL INVESTORS
+      Summary: Stake leading PoS assets securely with an institutional-grade provider. No infrastructure or technical expertise required.
+      
+      Recommended Products:
+      - Institutional Staking
+      - Yield Infrastructure — High-Yield Stablecoin Vaults
+      
+      Stake Now: https://stake.everstake.one/dashboard/stake/ethereum/
+      
+      6. FINTECH APPS AND CARD PROGRAMS
+      Summary: Compliant integrations enabling secure staking features for institutional and retail users, with seamless Wallet SDK access to 130+ networks.
+      
+      Recommended Products:
+      - Wallet SDK
+      - Institutional Staking
+      - Yield Infrastructure
+      
+      SDK: https://docs.everstake.one/integrations/everstake-products/wallet-sdk
+      
+      CONTACT: https://everstake.one/contact-us
+
+  get_developer_docs: 
+    <<: *static_readonly_tool
+    description: |
+      Comprehensive developer resources and integration documentation for Everstake's staking and yield infrastructure.
+      Use this tool when developers need SDK documentation, integration guides, API references, or technical implementation details.
+    static_response: |
+      EVERSTAKE DEVELOPER DOCUMENTATION
+      
+      OVERVIEW: Everstake provides developer tooling for integrating staking and yield infrastructure into wallets, exchanges, custodians, and fintech applications. All SDKs are production-grade and used by partners including Trezor, Exodus, and Crypto.com.
+      
+      DOCUMENTATION HUB: https://docs.everstake.one
+      
+      DEVELOPER RESOURCES:
+      
+      1. STAKING GUIDES
+      URL: https://docs.everstake.one/staking-docs/staking-guide
+      Description: Step-by-step guides for staking on all supported Everstake protocols. Covers delegation, validator selection, reward withdrawal, and network-specific requirements.
+      Audience: Retail stakers, Developers, Institutions new to staking
+      
+      2. WALLET SDK FOR STAKING
+      URL: https://docs.everstake.one/integrations/everstake-products/wallet-sdk
+      Description: SDK enabling wallets, exchanges, and fintech apps to embed staking functionality across 130+ supported networks. Provides seamless access to Everstake's staking infrastructure without managing validators directly.
+      Audience: Wallet developers, Exchange developers, Fintech engineers
+      Use Cases:
+      - Embedding staking in a wallet UI
+      - Adding staking to an exchange product
+      - Powering staking features in a fintech app
+      
+      3. YIELD SDK — VAULT INTEGRATION
+      URL: https://docs.everstake.one/integrations/everstake-products/wallet-sdk/protocols/hysp-vault
+      Description: SDK for integrating Everstake's yield vault products (High-Yield Stablecoin Vaults, stVault) into institutional platforms. Provides programmatic access to vault APR data, deposit/withdrawal flows, and real-time on-chain reporting.
+      Audience: Custodian engineers, Asset manager platforms, Fintech integrators
+      Try Live: https://midas.app/mevusd
+      
+      4. SUPPORTED PROTOCOL LIST
+      URL: https://everstake.one/staking
+      Description: Full machine-readable list of all 130+ supported staking protocols with current APY, network details, and staking links.
+      
+      5. SECURITY TRUST CENTER
+      URL: https://security.everstake.one/
+      Description: Full security documentation including certification reports (available on request), infrastructure architecture overview, and vulnerability disclosure.
+      Report Vulnerability: https://everstake.one/report-vulnerability
+      
+      INTEGRATION SUPPORT:
+      Everstake's engineering team provides integration support for enterprise and institutional partners.
+      Contact: https://everstake.one/contact-us
+  get_contact_information:
+    <<: *static_readonly_tool
+    description: |
+      Comprehensive contact information and routing guide for Everstake inquiries, including social media, company resources, and purpose-specific contact channels.
+      Use when users need to contact Everstake or find specific company resources.
+    static_response: |
+      EVERSTAKE CONTACT INFORMATION
+      
+      PRIMARY ACTIONS:
+      
+      🔗 CONTACT US: https://everstake.one/contact-us
+      For institutional inquiries, partnership discussions, and integration requests
+      
+      🚀 STAKE NOW: https://stake.everstake.one/dashboard/stake/ethereum/
+      Begin staking directly — no contact required for retail and self-service institutional staking
+      
+      🏢 ENTERPRISE & INSTITUTIONAL INQUIRY: https://everstake.one/contact-us
+      For custodians, exchanges, asset managers, and institutions requiring custom solutions or VaaS
+      
+      COMPANY RESOURCES:
+      - Website: https://everstake.one
+      - About: https://everstake.one/company/about
+      - Careers: https://everstake.one/company/careers
+      - Events: https://everstake.one/company/events
+      - Press: https://everstake.one/company/press
+      - Blog: https://everstake.one/resources/blog
+      - Crypto Reports: https://everstake.one/resources/crypto-reports
+      
+      SOCIAL MEDIA:
+      - Twitter: https://twitter.com/everstake_pool
+      - LinkedIn: https://www.linkedin.com/company/everstakeofficial
+      
+      SECURITY & TRUST:
+      - Trust Center: https://security.everstake.one/
+      - Report Vulnerability: https://everstake.one/report-vulnerability
+      
+      LEGAL:
+      - Privacy Notice: https://everstake.one/privacy-notice
+      - Terms of Use: https://everstake.one/terms-of-use
+      - Cookie Policy: https://everstake.one/cookie-policy
+      
+      INQUIRY ROUTING GUIDE:
+      
+      For Retail or Self-Service Staking:
+      → Direct to: https://stake.everstake.one/dashboard/stake/ethereum/
+      
+      For Institutional Staking, Yield Vaults, or Solana Access (SWQOS/ShredStream):
+      → Contact: https://everstake.one/contact-us
+      
+      For Partnership or Integration Support:
+      → Contact: https://everstake.one/contact-us
+      
+      For Developer Support:
+      → Documentation: https://docs.everstake.one
+      
+      For Press or Media Inquiries:
+      → Press Page: https://everstake.one/company/press
+
+  get_security_profile:
+    <<: *static_readonly_tool
+    description: |
+      Comprehensive security and compliance information for Everstake: certifications, audits, infrastructure security, and compliance standards.
+      Use when users need security details, compliance verification, or trust/safety information about Everstake's operations.
+    static_response: |
+      EVERSTAKE SECURITY PROFILE
+      
+      OVERVIEW: Everstake is the only major validator operator certified across all six institutional compliance standards simultaneously. Our globally distributed bare-metal infrastructure, multi-cloud architecture, and audited security frameworks deliver the uptime, transparency, and operational clarity required by institutional teams that cannot afford uncertainty.
+      
+      TRUST CENTER: https://security.everstake.one/
+      REPORT VULNERABILITY: https://everstake.one/report-vulnerability
+      AUDITOR: Prescient Security — Global Top 20 Independent Audit and Penetration Testing Company
+      
+      KEY DIFFERENTIATOR: Everstake is the only validator operator certified across all six major institutional compliance standards: SOC 2 Type II, ISO/IEC 27001, NIST CSF, ITGC, GDPR, and CCPA — simultaneously.
+      
+      CERTIFICATIONS & COMPLIANCE:
+      
+      1. SOC 2 TYPE II - CERTIFIED
+      Validates that Everstake maintains high levels of operational integrity, data confidentiality, and system availability. Type II involves continuous evaluation of systems over time — one of the most rigorous benchmarks in enterprise-grade cybersecurity.
+      Covers: Security, Availability, Processing Integrity, Confidentiality, and Privacy
+      Issued by: AICPA (via Prescient Security audit)
+      Significance: Required by most US enterprise and institutional buyers as prerequisite for security review
+      
+      2. ISO/IEC 27001:2022 - CERTIFIED
+      International gold standard for information security management systems (ISMS). Confirms Everstake's ISMS complies with ISO/IEC 27001:2022, covering 93 prescribed Annex A security controls.
+      Issued by: Prescient Security
+      Significance: Global gold standard for ISMS — critical for non-US institutional and regulated entity buyers
+      
+      3. NIST CSF - COMPLIANT
+      National Institute of Standards and Technology Cybersecurity Framework — widely adopted US federal and enterprise standard covering Identify, Protect, Detect, Respond, and Recover functions.
+      Significance: Aligned with US government and critical infrastructure security expectations
+      
+      4. ITGC - COMPLIANT
+      IT General Controls — standard controls covering access management, change management, computer operations, and IT infrastructure that underpin reliable financial and operational reporting.
+      Significance: Required for integration with regulated financial institutions and audit trails
+      
+      5. GDPR - COMPLIANT
+      General Data Protection Regulation — ensures Everstake adheres to the strictest data privacy protocols for users in the EU, EEA, and UK.
+      Significance: Mandatory for any provider handling European client data
+      
+      6. CCPA/CRPA - COMPLIANT
+      California Consumer Privacy Act / California Privacy Rights Act — US data privacy compliance for California residents.
+      Significance: Required for providers operating with US-based clients and data subjects
+      
+      INFRASTRUCTURE SECURITY:
+      - Architecture: Geo-distributed bare-metal infrastructure with multi-cloud architecture
+      - Validator isolation: Isolated validator clusters per deployment
+      - Failover: Automated failover with continuous performance monitoring
+      - Monitoring: 24/7 continuous monitoring across all validators and networks
+      - Slashing record: Zero material slashing events since inception (2018)
+      - Uptime: 99.98% observed infrastructure uptime
+      
+      OPERATIONAL CONTROLS:
+      - Strict operational controls and continuous system validation
+      - Documented security controls aligned with ISO 27001 Annex A
+      - Regular independent penetration testing
+      - Smart contract audits (e.g. ETH2 Batch Deposit Contract audited by Ackee Blockchain Security)
+      - Continuous control monitoring and improvement programme
+      
+      CUSTODY PLATFORM COMPATIBILITY:
+      Non-custodial by design with seamless integration support for:
+      - Fireblocks
+      - BitGo
+      - Anchorage Digital
+      - Zodia Custody
+      - Coinbase Custody
+      - Copper.co
+      - Safe
+      
+      CERTIFICATION REPORTS: Full certification reports available upon request — contact https://everstake.one/contact-us
+
+  get_integrations:
+    <<: *static_readonly_tool
+    description: |
+      Comprehensive integration information for Everstake: custody platform integrations, wallet partnerships, and developer SDKs.
+      Use when users need details about integrating Everstake with existing platforms, custody solutions, or development frameworks.
+    static_response: |
+      EVERSTAKE INTEGRATIONS
+      
+      OVERVIEW: Everstake integrates natively with all major institutional custody platforms, wallet providers, and developer frameworks. Staking and yield products can be added to your stack without changing internal custody, reporting, or compliance workflows.
+      
+      CUSTODY PLATFORM INTEGRATIONS:
+      
+      1. FIREBLOCKS (MPC Custody) - Enterprise Ready
+      Native integration enabling institutions to stake directly from Fireblocks custody without moving assets. Supports all major PoS networks.
+      Website: https://www.fireblocks.com
+      
+      2. BITGO (Qualified Custodian) - Enterprise Ready
+      Staking integration for BitGo-custodied assets across Everstake-supported networks.
+      Website: https://www.bitgo.com
+      
+      3. ANCHORAGE DIGITAL (Federally Chartered Digital Asset Bank) - Enterprise Ready
+      Integration enabling Anchorage Digital clients to access Everstake staking infrastructure.
+      Website: https://www.anchorage.com
+      
+      4. ZODIA CUSTODY (Institutional Custodian) - Enterprise Ready
+      Staking access for Zodia Custody-held assets via Everstake's non-custodial validator infrastructure.
+      Website: https://zodia.io
+      
+      5. COPPER.CO (Digital Asset Custodian) - Enterprise Ready
+      Integration enabling Copper.co clients to stake without changing custody arrangements.
+      Website: https://copper.co
+      
+      6. COINBASE CUSTODY (Qualified Custodian) - Enterprise Ready
+      Staking integration for Coinbase Custody clients across Everstake-supported protocols.
+      Website: https://www.coinbase.com/prime/custody
+      
+      7. SAFE (formerly Gnosis Safe) - Multi-sig/Smart Contract Wallet - Enterprise Ready
+      Multi-sig wallet integration enabling DAOs, protocols, and institutions to stake from Safe wallets.
+      Website: https://safe.global
+      
+      WALLET & PLATFORM PARTNERSHIPS:
+      
+      1. TREZOR (Hardware Wallet)
+      Hardware-wallet-native staking across major PoS networks, powered by Everstake. Enabled via Staking-as-a-Service integration.
+      Case Study: https://everstake.one/assets/pdf/caseStudies/everstake-supports-trezor-in-integrating-staking-as-a-service-2026.pdf
+      
+      2. EXODUS (Software Wallet)
+      Everstake powers staking rewards for Exodus users, enabling secure and effortless earning on held assets.
+      
+      3. CRYPTO.COM (Exchange/Platform)
+      Everstake provides validator infrastructure for Crypto.com's staking services.
+      
+      DEVELOPER SDKs:
+      
+      1. WALLET SDK FOR STAKING
+      SDK for embedding staking across 130+ networks into wallets, exchanges, and fintech apps.
+      Documentation: https://docs.everstake.one/integrations/everstake-products/wallet-sdk
+      Suitable For: Wallets, Exchanges, Fintech apps, Card programs
+      
+      2. YIELD SDK — VAULT INTEGRATION
+      SDK for integrating Everstake yield vault products (stablecoin vaults, stVault) into institutional platforms.
+      Documentation: https://docs.everstake.one/integrations/everstake-products/wallet-sdk/protocols/hysp-vault
+      Suitable For: Custodians, Asset managers, Banks, Fintech platforms
+      
+      INTEGRATION INQUIRY: https://everstake.one/contact-us
+      
+      NOTE: Custom integration models available for institutional and enterprise partners. Contact Everstake for bespoke deployment architectures.
+ 
+  get_uptime_metrics:
+    <<: *static_readonly_tool
+    description: |
+      Provides uptime metrics for Everstake services.
+  get_chains:
+    <<: *static_readonly_tool
+    description: |
+      Provides an up to date list of supported blockchain networks by Everstake and info about these chains: 
+      fees, aprs, supported currencies, active/inactive statuses, etc.
+
+  staking_calculator:
+    <<: *static_readonly_tool
+    description: |
+      Interactive staking reward estimator. Provide a network and stake amount to receive estimated annual and monthly rewards based on current APY. Works only with networks provided by the get_chains tool.
+      Data freshness: APY rates updated daily. MUST HAVE either currency or chain set.
+
+  request_integration:
+    destructive_hint: false
+    idempotent_hint: false
+    readonly_hint: false
+    open_world: true
+    description: |
+      Submit an integration or staking inquiry on behalf of a user. All submissions are routed to Everstake's sales team via Pipedrive CRM.
+      Use when a user expresses intent to integrate with Everstake, explore staking services, or request more information about products.
+      Collect required fields (first_name, last_name, work_email) conversationally and gather optional fields where available.
+      The lead_source field is set automatically by the server — do not ask the user for it. DO NOT SPAM THIS TOOL - TRY ONCE IN 30 SECONDS MAX!
