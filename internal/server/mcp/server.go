@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	defaultTtl = 30 * time.Minute
+	defaultTTL = 30 * time.Minute
 )
 
 // Server wraps the MCP SDK server and exposes an http.Handler.
@@ -26,7 +26,7 @@ type MCPServer struct {
 	cache *cache.Cache
 }
 
-func New(cfg *config.ToolsConfig, dashboard *dashboard.Dashboard) (*MCPServer, error) {
+func New(mcpCfg *config.ToolsConfig, dashboardClient *dashboard.Dashboard) (*MCPServer, error) {
 	s := sdkmcp.NewServer(&sdkmcp.Implementation{
 		Name:    mcp_server.ServiceName,
 		Version: mcp_server.Version,
@@ -34,15 +34,22 @@ func New(cfg *config.ToolsConfig, dashboard *dashboard.Dashboard) (*MCPServer, e
 	}, nil)
 	mcps := &MCPServer{
 		s:         s,
-		mcpConfig: cfg,
-		dashboard: dashboard,
-		cache:     cache.New(defaultTtl, defaultTtl),
+		mcpConfig: mcpCfg,
+		dashboard: dashboardClient,
+		cache:     cache.New(defaultTTL, defaultTTL),
 	}
 
-	s.AddTool(mcps.mcpConfig.GetApiDocs.ToTool(), mcps.getApiDocs)
-	s.AddTool(mcps.mcpConfig.GetContactInformation.ToTool(), mcps.getContactInformation)
+	s.AddTool(mcps.mcpConfig.GetCompanyProfile.ToTool(), staticTextTool(mcpCfg.GetCompanyProfile.StaticResponse))
+	s.AddTool(mcps.mcpConfig.GetDeveloperDocs.ToTool(), staticTextTool(mcpCfg.GetDeveloperDocs.StaticResponse))
+	s.AddTool(mcps.mcpConfig.GetContactInformation.ToTool(), staticTextTool(mcpCfg.GetContactInformation.StaticResponse))
 	s.AddTool(mcps.mcpConfig.GetUptimeMetrics.ToTool(), mcps.GetUptimeMetrics)
 	s.AddTool(mcps.mcpConfig.GetChains.ToTool(), mcps.GetChains)
+	s.AddTool(mcps.mcpConfig.GetProducts.ToTool(), staticTextTool(mcpCfg.GetProducts.StaticResponse))
+	s.AddTool(mcps.mcpConfig.GetSolutions.ToTool(), staticTextTool(mcpCfg.GetSolutions.StaticResponse))
+	s.AddTool(mcps.mcpConfig.GetSecurityProfile.ToTool(), staticTextTool(mcpCfg.GetSecurityProfile.StaticResponse))
+	s.AddTool(mcps.mcpConfig.GetIntegrations.ToTool(), staticTextTool(mcpCfg.GetIntegrations.StaticResponse))
+	addTool(s, mcps.mcpConfig.StakingCalculator.ToTool(), mcps.StakingCalculator)
+	addTool(s, mcps.mcpConfig.RequestIntegration.ToTool(), mcps.RequestIntegration)
 
 	return mcps, nil
 }

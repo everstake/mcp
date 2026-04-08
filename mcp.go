@@ -13,7 +13,7 @@ const (
 	ServiceName = "Everstake MCP"
 
 	// mcp server cache
-	DashboardCacheTtl = 10 * time.Minute
+	DashboardCacheTTL = 10 * time.Minute
 
 	// rate limiter
 	RateLimitRefillPerSecond      = 0.5

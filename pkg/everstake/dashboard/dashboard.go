@@ -1,6 +1,7 @@
 package dashboard
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 
@@ -14,20 +15,24 @@ type (
 	}
 )
 
-func NewDashboard(dashboardUrl string, overrideHttpClient ...http.Client) *Dashboard {
+func NewDashboard(dashboardURL string, overrideHTTPClient ...http.Client) *Dashboard {
 	cli := http.Client{}
-	if len(overrideHttpClient) > 0 {
-		cli = overrideHttpClient[0]
+	if len(overrideHTTPClient) > 0 {
+		cli = overrideHTTPClient[0]
 	}
 	return &Dashboard{
 		cli: cli,
-		url: dashboardUrl,
+		url: dashboardURL,
 	}
 }
 
-func get[T any](d *Dashboard, path string) (res T, err error) {
+func get[T any](d *Dashboard, ctx context.Context, path string) (res T, err error) {
 	endpoint := d.url + path
-	resp, err := d.cli.Get(endpoint)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, endpoint, http.NoBody)
+	if err != nil {
+		return res, errors.Wrap(err, "failed to create request")
+	}
+	resp, err := d.cli.Do(req)
 	if err != nil {
 		return res, errors.Wrap(err, "failed to send request to dashboard")
 	}
