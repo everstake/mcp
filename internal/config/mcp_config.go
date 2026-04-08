@@ -27,6 +27,7 @@ type (
 		GetSecurityProfile    ToolConfig `yaml:"get_security_profile"`
 		GetIntegrations       ToolConfig `yaml:"get_integrations"`
 		StakingCalculator     ToolConfig `yaml:"staking_calculator"`
+		RequestIntegration    ToolConfig `yaml:"request_integration"`
 	}
 
 	ToolAnnotations struct {
@@ -37,11 +38,11 @@ type (
 	}
 
 	ToolConfig struct {
-		ToolAnnotations `yaml:",inline"`
+		InputSchema     map[string]interface{} `yaml:"input_schema"`
 		Name            string                 `yaml:"-"`
 		Description     string                 `yaml:"description"`
 		StaticResponse  string                 `yaml:"static_response"`
-		InputSchema     map[string]interface{} `yaml:"input_schema"`
+		ToolAnnotations `yaml:",inline"`
 	}
 )
 

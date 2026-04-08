@@ -17,8 +17,8 @@ import (
 )
 
 type Server struct {
-	serverCfg config.ServiceConfig
 	mcpServer *servermcp.MCPServer
+	serverCfg config.ServiceConfig
 }
 
 func New(serverCfg config.ServiceConfig, mcpServer *servermcp.MCPServer) *Server {
@@ -33,13 +33,14 @@ func (s *Server) Run(ctx context.Context) error {
 
 	addr := fmt.Sprintf(":%d", s.serverCfg.Port)
 	srv := &http.Server{
-		Addr:    addr,
-		Handler: r,
+		Addr:              addr,
+		Handler:           r,
+		ReadHeaderTimeout: 10 * time.Second,
 	}
 
 	go func() {
 		<-ctx.Done()
-		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		shutdownCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
 		defer cancel()
 		if err := srv.Shutdown(shutdownCtx); err != nil {
 			log.Logger.Error("graceful shutdown failed", log.E(err))
@@ -54,7 +55,7 @@ func (s *Server) Run(ctx context.Context) error {
 	return nil
 }
 
-func (s *Server) initRouter(mcpSrv *servermcp.MCPServer) *gin.Engine {
+func (*Server) initRouter(mcpSrv *servermcp.MCPServer) *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Recovery())
 

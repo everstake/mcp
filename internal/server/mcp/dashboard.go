@@ -16,16 +16,22 @@ import (
 const (
 	globalStatsCacheKey = "dashboard-global-stats"
 	chainsCacheKey      = "dashboard-chains"
+
+	percentDivisor = 100.0
+	monthsPerYear  = 12.0
 )
 
-func (s *MCPServer) GetUptimeMetrics(context.Context, *sdkmcp.CallToolRequest) (*sdkmcp.CallToolResult, error) {
+func (s *MCPServer) GetUptimeMetrics(ctx context.Context, _ *sdkmcp.CallToolRequest) (*sdkmcp.CallToolResult, error) {
 	if cached, found := s.cache.Get(globalStatsCacheKey); found {
-		val := cached.(*dashboard.GlobalStatsValue)
-		uptimeStr := fmt.Sprint(val.ServiceUptime)
-		return newTextResult(uptimeStr), nil
+		val, ok := cached.(*dashboard.GlobalStatsValue)
+		if ok {
+			uptimeStr := fmt.Sprint(val.ServiceUptime)
+			return newTextResult(uptimeStr), nil
+		}
+		log.Logger.Warn("invalid cache type for global stats")
 	}
 
-	globalStats, err := s.dashboard.GetGlobalStats()
+	globalStats, err := s.dashboard.GetGlobalStats(ctx)
 	if err != nil {
 		log.Logger.Error("failed to get global stats from dashboard", log.E(err))
 		return nil, ErrFailedToFetchDashboard
@@ -34,36 +40,36 @@ func (s *MCPServer) GetUptimeMetrics(context.Context, *sdkmcp.CallToolRequest) (
 	return newTextResult(fmt.Sprint(globalStats.ServiceUptime)), nil
 }
 
-func (s *MCPServer) GetChains(context.Context, *sdkmcp.CallToolRequest) (*sdkmcp.CallToolResult, error) {
-	chains, err := s.getChains()
+func (s *MCPServer) GetChains(ctx context.Context, _ *sdkmcp.CallToolRequest) (*sdkmcp.CallToolResult, error) {
+	chains, err := s.fetchChains(ctx)
 	if err != nil {
 		log.Logger.Error("failed to get chains from dashboard", log.E(err))
 		return nil, ErrFailedToFetchDashboard
 	}
 
-	return newJsonResult(chains), nil
+	return newJSONResult(chains), nil
 }
 
 type StakingCalculatorRequest struct {
-	Network  string  `json:"network" description:"The blockchain network to stake on, e.g. Ethereum, Solana, etc." required:"false"`
-	Amount   float64 `json:"amount" description:"The amount of cryptocurrency to stake."`
-	Currency string  `json:"currency" description:"The ticker symbol of the cryptocurrency to stake, e.g. ETH, SOL, etc." required:"false"`
+	Network  string  `json:"network" jsonschema:"The blockchain network to stake on, e.g. Ethereum, Solana, etc." required:"false"`
+	Currency string  `json:"currency" jsonschema:"The ticker symbol of the cryptocurrency to stake, e.g. ETH, SOL, etc." required:"false"`
+	Amount   float64 `json:"amount" jsonschema:"The amount of cryptocurrency to stake."`
 }
 
 type StakingCalculatorResponse struct {
 	Network                 string  `json:"network"`
 	Ticker                  string  `json:"ticker"`
-	AmountStaked            float64 `json:"amount_staked"`
 	CurrentAPYUsed          string  `json:"current_apy_used"`
-	EstimatedAnnualRewards  float64 `json:"estimated_annual_rewards"`
-	EstimatedMonthlyRewards float64 `json:"estimated_monthly_rewards"`
 	Currency                string  `json:"currency"`
 	StakingURL              string  `json:"staking_url"`
 	Disclaimer              string  `json:"disclaimer"`
+	AmountStaked            float64 `json:"amount_staked"`
+	EstimatedAnnualRewards  float64 `json:"estimated_annual_rewards"`
+	EstimatedMonthlyRewards float64 `json:"estimated_monthly_rewards"`
 }
 
-func (s *MCPServer) StakingCalculator(_ context.Context, _ *sdkmcp.CallToolRequest, input StakingCalculatorRequest) (*sdkmcp.CallToolResult, any, error) {
-	chains, err := s.getChains()
+func (s *MCPServer) StakingCalculator(ctx context.Context, _ *sdkmcp.CallToolRequest, input StakingCalculatorRequest) (*sdkmcp.CallToolResult, any, error) {
+	chains, err := s.fetchChains(ctx)
 	if err != nil {
 		log.Logger.Error("failed to get chains for staking calculator", log.E(err))
 		return nil, nil, ErrFailedToFetchDashboard
@@ -81,8 +87,8 @@ func (s *MCPServer) StakingCalculator(_ context.Context, _ *sdkmcp.CallToolReque
 	chain := chains[chainIx]
 
 	apr := chain.Apr
-	annualRewards := input.Amount * (apr / 100)
-	monthlyRewards := annualRewards / 12
+	annualRewards := input.Amount * (apr / percentDivisor)
+	monthlyRewards := annualRewards / monthsPerYear
 
 	stakingURL := fmt.Sprintf("https://stake.everstake.one/dashboard/stake/%s/", strings.ToLower(chain.Chain))
 
@@ -101,12 +107,34 @@ func (s *MCPServer) StakingCalculator(_ context.Context, _ *sdkmcp.CallToolReque
 	return nil, response, nil
 }
 
-func (s *MCPServer) getChains() ([]dashboard.Chain, error) {
-	if cached, found := s.cache.Get(chainsCacheKey); found {
-		return cached.([]dashboard.Chain), nil
+func (s *MCPServer) RequestIntegration(ctx context.Context, _ *sdkmcp.CallToolRequest, input *dashboard.PDLead) (*sdkmcp.CallToolResult, any, error) {
+	if input.LeadSource == "" {
+		input.LeadSource = "MCP service (source not specified)"
 	}
 
-	chains, err := s.dashboard.GetChains()
+	err := s.dashboard.CreatePDLead(ctx, input)
+	if err != nil {
+		log.Logger.Error("failed to create pd lead", log.E(err))
+		return &sdkmcp.CallToolResult{
+			IsError: true,
+			Content: []sdkmcp.Content{
+				&sdkmcp.TextContent{Text: "Submission failed. Please try again or contact Everstake directly at https://everstake.one/contact-us"},
+			},
+		}, nil, nil
+	}
+
+	return newTextResult("Your inquiry has been submitted. Everstake's team will be in touch shortly."), nil, nil
+}
+
+func (s *MCPServer) fetchChains(ctx context.Context) ([]dashboard.Chain, error) {
+	if cached, found := s.cache.Get(chainsCacheKey); found {
+		if chains, ok := cached.([]dashboard.Chain); ok {
+			return chains, nil
+		}
+		log.Logger.Warn("invalid cache type for chains")
+	}
+
+	chains, err := s.dashboard.GetChains(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -117,6 +145,6 @@ func (s *MCPServer) getChains() ([]dashboard.Chain, error) {
 		chains[i].LogoWhite = ""
 	}
 
-	s.cache.Set(chainsCacheKey, chains, mcp_server.DashboardCacheTtl)
+	s.cache.Set(chainsCacheKey, chains, mcp_server.DashboardCacheTTL)
 	return chains, nil
 }

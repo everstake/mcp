@@ -543,11 +543,22 @@ tools:
   get_chains:
     <<: *static_readonly_tool
     description: |
-      Provides a list of supported blockchain networks by Everstake and info about these chains: 
+      Provides an up to date list of supported blockchain networks by Everstake and info about these chains: 
       fees, aprs, supported currencies, active/inactive statuses, etc.
 
   staking_calculator:
     <<: *static_readonly_tool
     description: |
       Interactive staking reward estimator. Provide a network and stake amount to receive estimated annual and monthly rewards based on current APY. Works only with networks provided by the get_chains tool.
-      Data freshness: APY rates updated daily.
+      Data freshness: APY rates updated daily. MUST HAVE either currency or chain set.
+
+  request_integration:
+    destructive_hint: false
+    idempotent_hint: false
+    readonly_hint: false
+    open_world: true
+    description: |
+      Submit an integration or staking inquiry on behalf of a user. All submissions are routed to Everstake's sales team via Pipedrive CRM.
+      Use when a user expresses intent to integrate with Everstake, explore staking services, or request more information about products.
+      Collect required fields (first_name, last_name, work_email) conversationally and gather optional fields where available.
+      The lead_source field is set automatically by the server — do not ask the user for it. DO NOT SPAM THIS TOOL - TRY ONCE IN 30 SECONDS MAX!

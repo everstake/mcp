@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"mcp-server/pkg/log"
+	"reflect"
 
 	"github.com/google/jsonschema-go/jsonschema"
 	sdkmcp "github.com/modelcontextprotocol/go-sdk/mcp"
@@ -22,7 +23,7 @@ func newTextResult(response string) *sdkmcp.CallToolResult {
 	}
 }
 
-func newJsonResult(obj any) *sdkmcp.CallToolResult {
+func newJSONResult(obj any) *sdkmcp.CallToolResult {
 	return &sdkmcp.CallToolResult{
 		StructuredContent: map[string]any{"data": obj},
 	}
@@ -40,8 +41,12 @@ func addTool[In any, Out any](s *sdkmcp.Server, tool *sdkmcp.Tool, handler sdkmc
 	forOpts := &jsonschema.ForOptions{
 		IgnoreInvalidTypes: false, // err if unknown type
 	}
+	inType := reflect.TypeFor[In]()
+	if inType.Kind() == reflect.Pointer {
+		inType = inType.Elem()
+	}
 
-	inputSchema, err := jsonschema.For[In](forOpts)
+	inputSchema, err := jsonschema.ForType(inType, forOpts)
 	if err != nil {
 		var empty In
 		log.Logger.Fatal("failed to generate json schema for type", log.V("type", fmt.Sprintf("%T", empty)), log.E(err))
