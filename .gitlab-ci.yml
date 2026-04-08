@@ -1,0 +1,28 @@
+stages:
+  - test
+  - trigger
+
+default:
+  tags:
+    - runner
+
+trigger_job:
+  stage: trigger
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ "/deploy-*/"
+      when: on_success
+  trigger:
+    project: dev/main/everstake/mcp-server-cicd
+    strategy: depend
+
+include:
+  - project: dev/main/everstake/mcp-server-cicd
+    ref: main
+    file:
+      - .trigger.gitlab-ci.yml
+  - template: Security/SAST.gitlab-ci.yml
+    rules:
+      - if: $CI_COMMIT_BRANCH !~ "/deploy-*/"
+  - template: Security/Secret-Detection.gitlab-ci.yml
+    rules:
+      - if: $CI_COMMIT_BRANCH !~ "/deploy-*/"
