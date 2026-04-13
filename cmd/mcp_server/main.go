@@ -27,7 +27,7 @@ func main() {
 		log.Logger.Fatal("failed to load mcp config", log.E(err))
 	}
 
-	dbClient := dashboard.NewDashboard(svcCfg.DashboardURL)
+	dbClient := dashboard.NewDashboard(svcCfg.DashboardURL, svcCfg.DashboardAPIKey)
 
 	mcps, err := mcp.New(mcpCfg, dbClient)
 	if err != nil {
