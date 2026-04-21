@@ -23,7 +23,7 @@ type PDLead struct {
 	ImplementationTimeline string `json:"implementation_timeline,omitempty" jsonschema:"Implementation timeline: ASAP, 1–3 Months, 3+ Months"`
 	LeadSource             string `json:"lead_source,omitempty" jsonschema:"Source of the lead — set automatically by the server, do not ask the user"`
 
-	SendNewsletter bool `json:"send_newsletter,omitempty" jsonschema:"Whether the contact consents to receive Everstake marketing communications"`
+	SendNewsletter bool `json:"agree_news,omitempty" jsonschema:"Whether the contact consents to receive Everstake marketing communications"`
 }
 
 // CreatePDLead submits a lead to the dashboard backend. The backend returns 200 with an empty body on success.
