@@ -2,6 +2,7 @@ package mcp
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"slices"
 	"strings"
@@ -20,6 +21,19 @@ const (
 	percentDivisor = 100.0
 	monthsPerYear  = 12.0
 )
+
+func processDashboardError(err error) (*sdkmcp.CallToolResult, error) {
+	var bodyErr dashboard.BodyError
+	if errors.As(err, &bodyErr) {
+		return nil, err
+	}
+	return &sdkmcp.CallToolResult{
+		IsError: true,
+		Content: []sdkmcp.Content{
+			&sdkmcp.TextContent{Text: "Failed to fetch data from dashboard. Please try again later."},
+		},
+	}, nil
+}
 
 func (s *MCPServer) GetUptimeMetrics(ctx context.Context, _ *sdkmcp.CallToolRequest) (*sdkmcp.CallToolResult, error) {
 	if cached, found := s.cache.Get(globalStatsCacheKey); found {
@@ -110,17 +124,15 @@ func (s *MCPServer) StakingCalculator(ctx context.Context, _ *sdkmcp.CallToolReq
 func (s *MCPServer) RequestIntegration(ctx context.Context, _ *sdkmcp.CallToolRequest, input *dashboard.PDLead) (*sdkmcp.CallToolResult, any, error) {
 	if input.LeadSource == "" {
 		input.LeadSource = "MCP service (source not specified)"
+	} else {
+		input.LeadSource = fmt.Sprintf("MCP service (%s)", input.LeadSource)
 	}
 
 	err := s.dashboard.CreatePDLead(ctx, input)
 	if err != nil {
 		log.Logger.Error("failed to create pd lead", log.E(err))
-		return &sdkmcp.CallToolResult{
-			IsError: true,
-			Content: []sdkmcp.Content{
-				&sdkmcp.TextContent{Text: "Submission failed. Please try again or contact Everstake directly at https://everstake.one/contact-us"},
-			},
-		}, nil, nil
+		resp, processedErr := processDashboardError(err)
+		return resp, nil, processedErr
 	}
 
 	return newTextResult("Your inquiry has been submitted. Everstake's team will be in touch shortly."), nil, nil
