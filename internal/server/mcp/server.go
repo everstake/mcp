@@ -1,6 +1,7 @@
 package mcp
 
 import (
+	"context"
 	"net/http"
 	"time"
 
@@ -58,4 +59,8 @@ func (s *MCPServer) Handler() http.Handler {
 	return sdkmcp.NewStreamableHTTPHandler(func(_ *http.Request) *sdkmcp.Server {
 		return s.s
 	}, nil)
+}
+
+func (s *MCPServer) RunStdio(ctx context.Context) error {
+	return s.s.Run(ctx, &sdkmcp.StdioTransport{})
 }

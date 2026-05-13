@@ -2,7 +2,7 @@
 
 MCP server exposing Everstake staking data and company information to AI agents. Built in Go using [modelcontextprotocol/go-sdk](https://github.com/modelcontextprotocol/go-sdk).
 
-**Transport:** Streamable HTTP (MCP 2025-03-26 spec) — single `/` endpoint
+**Transports:** Streamable HTTP (MCP 2025-03-26 spec, single `/` endpoint) or stdio. Selected via `MCP_TRANSPORT`.
 
 ---
 
@@ -40,6 +40,16 @@ go run ./cmd/mcp_server
 
 The server starts on port `8080` by default. Override with `PORT=<port>`.
 
+### Stdio mode
+
+```bash
+export DASHBOARD_URL=https://dashboard-api.everstake.one
+export MCP_TRANSPORT=stdio
+go run ./cmd/mcp_server
+```
+
+In stdio mode, the HTTP server, `/health` endpoint, and rate limiting are disabled. Logs go to stderr; stdout carries the MCP JSON-RPC protocol.
+
 ### Docker
 
 ```bash
@@ -52,7 +62,8 @@ docker run -e DASHBOARD_URL=https://dashboard-api.everstake.one -p 8080:8080 eve
 | Variable | Default | Required |
 |---|---|---|
 | `DASHBOARD_URL` | — | yes |
-| `PORT` | `8080` | no |
+| `MCP_TRANSPORT` | `http` | no (`http` or `stdio`) |
+| `PORT` | `8080` | no (http mode only) |
 | `GIN_MODE` | — | no (`release` set in Dockerfile) |
 
 ### Health Check
