@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"mcp-server/internal/config"
 	"mcp-server/internal/server"
 	"mcp-server/internal/server/mcp"
@@ -19,7 +20,8 @@ func main() {
 
 	svcCfg, err := config.LoadServiceConfig()
 	if err != nil {
-		log.Logger.Fatal("failed to load service config", log.E(err))
+		msg := fmt.Sprintf("failed to load service config: %s", err.Error())
+		log.Logger.Fatal(msg, log.E(err))
 	}
 
 	mcpCfg, err := config.LoadMCPConfig()
@@ -34,12 +36,10 @@ func main() {
 		log.Logger.Fatal("failed to create mcp server", log.E(err))
 	}
 
-	svc := server.New(svcCfg, mcps)
-
 	go func() {
-		err := svc.Run(ctx)
+		err := runTransport(ctx, svcCfg, mcps)
 		if err != nil {
-			log.Logger.Error("http server: ServeAPI", log.E(err))
+			log.Logger.Error("mcp server: run", log.E(err))
 		}
 		stop()
 	}()
@@ -47,4 +47,14 @@ func main() {
 	<-ctx.Done()
 	<-time.After(time.Second * 10)
 	log.Logger.Info("Terminated by timeout")
+}
+
+func runTransport(ctx context.Context, svcCfg config.ServiceConfig, mcps *mcp.MCPServer) error {
+	switch svcCfg.Transport {
+	case config.TransportStdio:
+		log.Logger.Info("starting MCP server with stdio transport")
+		return mcps.RunStdio(ctx)
+	default:
+		return server.New(svcCfg, mcps).Run(ctx)
+	}
 }
