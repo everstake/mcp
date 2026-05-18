@@ -15,7 +15,7 @@ MCP server exposing Everstake data to AI agents. Built in Go using the official 
 |---|---|
 | MCP SDK | `github.com/modelcontextprotocol/go-sdk v1.4.1` |
 | HTTP router | `github.com/gin-gonic/gin v1.10.0` |
-| MCP transport | Streamable HTTP only (`/` via `NewStreamableHTTPHandler`) |
+| MCP transport | Streamable HTTP (`/` via `NewStreamableHTTPHandler`) or stdio (`StdioTransport`), selected by `MCP_TRANSPORT` |
 | Config | `github.com/caarlos0/env` — env vars, no file |
 | Cache | `github.com/patrickmn/go-cache` — in-memory, 10 min TTL |
 | Logging | `github.com/sirupsen/logrus` |
@@ -29,13 +29,13 @@ MCP server exposing Everstake data to AI agents. Built in Go using the official 
 cmd/mcp_server/main.go          signal handling, wires deps, starts server
 internal/
   config/
-    service_config.go           ServiceConfig{Port, DashboardUrl} via caarlos0/env
+    service_config.go           ServiceConfig{Port, DashboardUrl, Transport} via caarlos0/env
     mcp_config.go               ToolsConfig, custom UnmarshalYAML, LoadMCPConfig
     config_unmarshal_test.go    tests for YAML unmarshaling
   server/
     server.go                   Gin router, /health, mounts MCP handler, graceful shutdown
     mcp/
-      server.go                 MCPServer struct, New(), Handler(), tool registration
+      server.go                 MCPServer struct, New(), Handler() (http), RunStdio() (stdio), tool registration
       dashboard.go              GetUptimeMetrics, GetChains handlers (live API + cache)
       utils.go                  newTextResult(), newJsonResult(), staticTextTool(), ErrFailedToFetchDashboard
     middleware/
@@ -79,8 +79,8 @@ Defined in `tools.yaml` as a map. The map key IS the tool name — injected auto
 
 ## Key Design Decisions
 
-**Transport: Streamable HTTP only**
-SSE (legacy 2024-11-05 spec) was considered but dropped. Streamable HTTP (2025-03-26 spec) is a superset — single endpoint handles GET/POST/DELETE, proxy-friendly. SSE is deprecated. Claude Desktop will migrate; new clients already use Streamable HTTP.
+**Transport: Streamable HTTP or stdio**
+Selected via `MCP_TRANSPORT` env var (`http` default, or `stdio`). SSE (legacy 2024-11-05 spec) was dropped — Streamable HTTP (2025-03-26 spec) is a superset, proxy-friendly. Stdio mode is for clients that launch the server as a subprocess (e.g. Claude Desktop); the HTTP server, `/health`, and rate limiting are skipped. Logrus writes to stderr by default, so stdout stays clean for JSON-RPC.
 
 **Tool name injection via reflection**
 YAML uses map keys as tool names (`get_api_docs:` not `name: get_api_docs`). `ToolsConfig.UnmarshalYAML` reads each field's `yaml` struct tag and sets `ToolConfig.Name` automatically. Adding a new tool to `ToolsConfig` gets its name for free.
@@ -130,8 +130,9 @@ newJsonResult(obj)  → StructuredContent: map[string]any{"data": obj}  // must 
 
 | Var | Default | Required |
 |---|---|---|
-| `PORT` | `8080` | no |
+| `PORT` | `8080` | no (http mode only) |
 | `DASHBOARD_URL` | `https://dashboard-api.everstake.one` | yes |
+| `MCP_TRANSPORT` | `http` | no (`http` or `stdio`) |
 | `GIN_MODE` | — | no (set to `release` in Dockerfile) |
 
 ---
