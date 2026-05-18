@@ -52,10 +52,23 @@ In stdio mode, the HTTP server, `/health` endpoint, and rate limiting are disabl
 
 ### Docker
 
+HTTP mode:
+
 ```bash
 docker build -t everstake-mcp .
 docker run -e DASHBOARD_URL=https://dashboard-api.everstake.one -p 8080:8080 everstake-mcp
 ```
+
+Stdio mode (interactive, no port mapping):
+
+```bash
+docker run --rm -i \
+  -e DASHBOARD_URL=https://dashboard-api.everstake.one \
+  -e MCP_TRANSPORT=stdio \
+  everstake-mcp
+```
+
+Use `-i` to keep stdin attached for the JSON-RPC protocol; do **not** pass `-t` (a TTY breaks line-based JSON framing). For MCP clients that launch the server as a subprocess, point `command` at `docker` with `args` matching the above, or wrap in a helper script (see [`.vscode/stdio_docker.sh`](.vscode/stdio_docker.sh) for an example using `--env-file`).
 
 ### Environment Variables
 
@@ -71,6 +84,55 @@ docker run -e DASHBOARD_URL=https://dashboard-api.everstake.one -p 8080:8080 eve
 ```
 GET /health
 ```
+
+---
+
+## Debugging with MCP Inspector
+
+[MCP Inspector](https://github.com/modelcontextprotocol/inspector) is the official tool for poking at MCP servers — list tools, call them, see raw JSON-RPC.
+
+> **Stdio note:** stdio servers are owned by the parent process; you cannot connect Inspector to an already-running stdio container. Inspector must **launch** the subprocess itself. For an interactive session you can reconnect to, use HTTP mode (option below).
+
+### HTTP mode (recommended for general debugging)
+
+Start the container:
+
+```bash
+docker run --rm -p 8080:8080 \
+  -e DASHBOARD_URL=https://dashboard-api.everstake.one \
+  -e DASHBOARD_API_KEY=<key> \
+  everstake-mcp
+```
+
+Open Inspector:
+
+```bash
+npx @modelcontextprotocol/inspector
+```
+
+In the UI:
+- **Transport Type:** `Streamable HTTP`
+- **URL:** `http://localhost:8080/`
+
+Container stays running across Inspector sessions.
+
+### Stdio mode (verify stdio transport)
+
+Let Inspector launch the container so it owns stdin/stdout:
+
+```bash
+npx @modelcontextprotocol/inspector \
+  docker run --rm -i \
+    --env-file .env \
+    everstake-mcp
+```
+
+Or fill the UI manually:
+- **Transport Type:** `STDIO`
+- **Command:** `docker`
+- **Arguments:** `run --rm -i --env-file .env everstake-mcp`
+
+Each Inspector session forks a fresh container; quitting Inspector kills it.
 
 ---
 
