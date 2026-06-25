@@ -16,7 +16,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build \
 # ---- runtime ----
 FROM alpine:3.21
 
-# ca-certificates needed for outbound HTTPS (dashboard API)
+## ca-certificates needed for outbound HTTPS (dashboard API)
 RUN apk add --no-cache ca-certificates && \
     update-ca-certificates
 
