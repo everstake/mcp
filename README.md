@@ -191,3 +191,4 @@ Cross-cutting rules that apply to all tool responses are in [`.vscode/tools_src/
 ### Dynamic tools
 
 `get_uptime_metrics` and `get_chains` fetch live data from the dashboard API with a 30-minute in-memory cache. Their handlers are in [`internal/server/mcp/dashboard.go`](internal/server/mcp/dashboard.go). The underlying API client lives in [`pkg/everstake/dashboard/`](pkg/everstake/dashboard/).
+
