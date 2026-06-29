@@ -20,10 +20,13 @@ jobs:
           WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
         run: |
           PAYLOAD='{"ref":"refs/heads/deploy-${{ github.event.inputs.environment }}","repository":{"full_name":"${{ github.repository }}"},"head_commit":{"id":"${{ github.sha }}"}}'
-
+          
           SIGNATURE="sha256=$(echo -n "$PAYLOAD" | openssl dgst -sha256 -hmac "$WEBHOOK_SECRET" | awk '{print $2}')"
-
+          
           curl -X POST https://gitlab-proxy.everstake.one/gitlab \
             -H "Content-Type: application/json" \
+            -H "User-Agent: GitHub-Hookshot/manual" \
+            -H "X-Github-Event: push" \
+            -H "X-Github-Hook-Id: 625960998" \
             -H "X-Hub-Signature-256: $SIGNATURE" \
             -d "$PAYLOAD"
