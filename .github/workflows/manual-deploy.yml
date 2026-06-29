@@ -16,12 +16,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger deploy
+        env:
+          WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
         run: |
+          PAYLOAD='{"ref":"refs/heads/deploy-${{ github.event.inputs.environment }}","repository":{"full_name":"${{ github.repository }}"},"head_commit":{"id":"${{ github.sha }}"}}'
+
+          SIGNATURE="sha256=$(echo -n "$PAYLOAD" | openssl dgst -sha256 -hmac "$WEBHOOK_SECRET" | awk '{print $2}')"
+
           curl -X POST https://gitlab-proxy.everstake.one/gitlab \
             -H "Content-Type: application/json" \
-            -H "X-Hub-Signature-256: ${{ secrets.WEBHOOK_SECRET }}" \
-            -d '{
-              "ref": "refs/heads/deploy-${{ github.event.inputs.environment }}",
-              "repository": {"full_name": "${{ github.repository }}"},
-              "head_commit": {"id": "${{ github.sha }}"}
-            }'
+            -H "X-Hub-Signature-256: $SIGNATURE" \
+            -d "$PAYLOAD"
