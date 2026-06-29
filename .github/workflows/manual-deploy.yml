@@ -1,0 +1,27 @@
+name: Manual Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment'
+        required: true
+        type: choice
+        options:
+          - stage
+          - prod
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger deploy
+        run: |
+          curl -X POST https://gitlab-proxy.everstake.one/gitlab \
+            -H "Content-Type: application/json" \
+            -H "X-Hub-Signature-256: ${{ secrets.WEBHOOK_SECRET }}" \
+            -d '{
+              "ref": "refs/heads/deploy-${{ github.event.inputs.environment }}",
+              "repository": {"full_name": "${{ github.repository }}"},
+              "head_commit": {"id": "${{ github.sha }}"}
+            }'
