@@ -19,7 +19,7 @@ jobs:
         env:
           WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
         run: |
-          PAYLOAD='{"ref":"refs/heads/deploy-${{ github.event.inputs.environment }}","repository":{"full_name":"${{ github.repository }}"},"head_commit":{"id":"${{ github.sha }}"}}'
+          PAYLOAD='{"ref":"refs/heads/deploy-${{ github.event.inputs.environment }}","repository":{"full_name":"${{ github.repository }}","html_url":"https://github.com/${{ github.repository }}"},"head_commit":{"id":"${{ github.sha }}"}}'
           
           SIGNATURE="sha256=$(echo -n "$PAYLOAD" | openssl dgst -sha256 -hmac "$WEBHOOK_SECRET" | awk '{print $2}')"
           
@@ -28,5 +28,6 @@ jobs:
             -H "User-Agent: GitHub-Hookshot/manual" \
             -H "X-Github-Event: push" \
             -H "X-Github-Hook-Id: 625960998" \
+            -H "X-Github-Delivery: manual-$(date +%s)" \
             -H "X-Hub-Signature-256: $SIGNATURE" \
             -d "$PAYLOAD"
