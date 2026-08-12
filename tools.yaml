@@ -74,7 +74,7 @@ tools:
       - Paribu Custody
       
       QUICK LINKS:
-      - Stake Now: https://stake.everstake.one/dashboard/stake/ethereum/
+      - Stake Now: https://stake.everstake.com/dashboard/stake/ethereum/
       - Contact: https://everstake.com/contact-us
 
   get_products:
@@ -151,7 +151,7 @@ tools:
       Liquidity: Unlocks collateral on predictable cycles without full validator exits
       Disclaimer: Offered by third-party partner; Everstake provides technical integration only
       
-      SDK: https://docs.everstake.one/integrations/everstake-products/wallet-sdk/protocols/hysp-vault
+      SDK: https://docs.everstake.com/integrations/everstake-products/wallet-sdk/protocols/hysp-vault
       
       3. SWQOS — STAKE-WEIGHTED QUALITY OF SERVICE
       URL: https://everstake.com/products/swqos
@@ -194,7 +194,7 @@ tools:
       - Enterprise: Custom configurations available
       
       CONTACT: https://everstake.com/contact-us
-      STAKE NOW: https://stake.everstake.one/dashboard/stake/ethereum/
+      STAKE NOW: https://stake.everstake.com/dashboard/stake/ethereum/
 
   get_solutions:
     <<: *static_readonly_tool
@@ -239,7 +239,7 @@ tools:
       - Wallet SDK integration for seamless embedding
       - Proven across Crypto.com, Exodus, Trezor, and more
       
-      SDK: https://docs.everstake.one/integrations/everstake-products/wallet-sdk
+      SDK: https://docs.everstake.com/integrations/everstake-products/wallet-sdk
       
       Case Study: Trezor x Everstake - Hardware-wallet-native staking partnership delivering secure staking across major PoS networks.
       PDF: https://everstake.com/assets/pdf/caseStudies/everstake-supports-trezor-in-integrating-staking-as-a-service-2026.pdf
@@ -278,7 +278,7 @@ tools:
       - Institutional Staking
       - Yield Infrastructure — High-Yield Stablecoin Vaults
       
-      Stake Now: https://stake.everstake.one/dashboard/stake/ethereum/
+      Stake Now: https://stake.everstake.com/dashboard/stake/ethereum/
       
       6. FINTECH APPS AND CARD PROGRAMS
       Summary: Compliant integrations enabling secure staking features for institutional and retail users, with seamless Wallet SDK access to 130+ networks.
@@ -288,7 +288,7 @@ tools:
       - Institutional Staking
       - Yield Infrastructure
       
-      SDK: https://docs.everstake.one/integrations/everstake-products/wallet-sdk
+      SDK: https://docs.everstake.com/integrations/everstake-products/wallet-sdk
       
       CONTACT: https://everstake.com/contact-us
 
@@ -302,17 +302,17 @@ tools:
       
       OVERVIEW: Everstake provides developer tooling for integrating staking and yield infrastructure into wallets, exchanges, custodians, and fintech applications. All SDKs are production-grade and used by partners including Trezor, Exodus, and Crypto.com.
       
-      DOCUMENTATION HUB: https://docs.everstake.one
+      DOCUMENTATION HUB: https://docs.everstake.com
       
       DEVELOPER RESOURCES:
       
       1. STAKING GUIDES
-      URL: https://docs.everstake.one/staking-docs/staking-guide
+      URL: https://docs.everstake.com/staking-docs/staking-guide
       Description: Step-by-step guides for staking on all supported Everstake protocols. Covers delegation, validator selection, reward withdrawal, and network-specific requirements.
       Audience: Retail stakers, Developers, Institutions new to staking
       
       2. WALLET SDK FOR STAKING
-      URL: https://docs.everstake.one/integrations/everstake-products/wallet-sdk
+      URL: https://docs.everstake.com/integrations/everstake-products/wallet-sdk
       Description: SDK enabling wallets, exchanges, and fintech apps to embed staking functionality across 130+ supported networks. Provides seamless access to Everstake's staking infrastructure without managing validators directly.
       Audience: Wallet developers, Exchange developers, Fintech engineers
       Use Cases:
@@ -321,7 +321,7 @@ tools:
       - Powering staking features in a fintech app
       
       3. YIELD SDK — VAULT INTEGRATION
-      URL: https://docs.everstake.one/integrations/everstake-products/wallet-sdk/protocols/hysp-vault
+      URL: https://docs.everstake.com/integrations/everstake-products/wallet-sdk/protocols/hysp-vault
       Description: SDK for integrating Everstake's yield vault products (High-Yield Stablecoin Vaults, stVault) into institutional platforms. Provides programmatic access to vault APR data, deposit/withdrawal flows, and real-time on-chain reporting.
       Audience: Custodian engineers, Asset manager platforms, Fintech integrators
       Try Live: https://midas.app/mevusd
@@ -351,7 +351,7 @@ tools:
       🔗 CONTACT US: https://everstake.com/contact-us
       For institutional inquiries, partnership discussions, and integration requests
       
-      🚀 STAKE NOW: https://stake.everstake.one/dashboard/stake/ethereum/
+      🚀 STAKE NOW: https://stake.everstake.com/dashboard/stake/ethereum/
       Begin staking directly — no contact required for retail and self-service institutional staking
       
       🏢 ENTERPRISE & INSTITUTIONAL INQUIRY: https://everstake.com/contact-us
@@ -382,7 +382,7 @@ tools:
       INQUIRY ROUTING GUIDE:
       
       For Retail or Self-Service Staking:
-      → Direct to: https://stake.everstake.one/dashboard/stake/ethereum/
+      → Direct to: https://stake.everstake.com/dashboard/stake/ethereum/
       
       For Institutional Staking, Yield Vaults, or Solana Access (SWQOS/ShredStream):
       → Contact: https://everstake.com/contact-us
@@ -391,7 +391,7 @@ tools:
       → Contact: https://everstake.com/contact-us
       
       For Developer Support:
-      → Documentation: https://docs.everstake.one
+      → Documentation: https://docs.everstake.com
       
       For Press or Media Inquiries:
       → Press Page: https://everstake.com/company/press
@@ -524,12 +524,12 @@ tools:
       
       1. WALLET SDK FOR STAKING
       SDK for embedding staking across 130+ networks into wallets, exchanges, and fintech apps.
-      Documentation: https://docs.everstake.one/integrations/everstake-products/wallet-sdk
+      Documentation: https://docs.everstake.com/integrations/everstake-products/wallet-sdk
       Suitable For: Wallets, Exchanges, Fintech apps, Card programs
       
       2. YIELD SDK — VAULT INTEGRATION
       SDK for integrating Everstake yield vault products (stablecoin vaults, stVault) into institutional platforms.
-      Documentation: https://docs.everstake.one/integrations/everstake-products/wallet-sdk/protocols/hysp-vault
+      Documentation: https://docs.everstake.com/integrations/everstake-products/wallet-sdk/protocols/hysp-vault
       Suitable For: Custodians, Asset managers, Banks, Fintech platforms
       
       INTEGRATION INQUIRY: https://everstake.com/contact-us
