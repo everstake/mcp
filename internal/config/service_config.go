@@ -12,7 +12,7 @@ const (
 )
 
 type ServiceConfig struct {
-	DashboardURL    string `env:"DASHBOARD_URL,required" envDefault:"https://dashboard-api.everstake.one"`
+	DashboardURL    string `env:"DASHBOARD_URL,required" envDefault:"https://dashboard-api.everstake.com"`
 	DashboardAPIKey string `env:"DASHBOARD_API_KEY"`
 	Transport       string `env:"MCP_TRANSPORT" envDefault:"http"`
 	Port            int    `env:"PORT" envDefault:"8080"`

@@ -34,7 +34,7 @@ MCP server exposing Everstake staking data and company information to AI agents.
 ### Local
 
 ```bash
-export DASHBOARD_URL=https://dashboard-api.everstake.one
+export DASHBOARD_URL=https://your-dashboard-api-host
 go run ./cmd/mcp_server
 ```
 
@@ -43,7 +43,7 @@ The server starts on port `8080` by default. Override with `PORT=<port>`.
 ### Stdio mode
 
 ```bash
-export DASHBOARD_URL=https://dashboard-api.everstake.one
+export DASHBOARD_URL=https://your-dashboard-api-host
 export MCP_TRANSPORT=stdio
 go run ./cmd/mcp_server
 ```
@@ -56,14 +56,14 @@ HTTP mode:
 
 ```bash
 docker build -t everstake-mcp .
-docker run -e DASHBOARD_URL=https://dashboard-api.everstake.one -p 8080:8080 everstake-mcp
+docker run -e DASHBOARD_URL=https://your-dashboard-api-host -p 8080:8080 everstake-mcp
 ```
 
 Stdio mode (interactive, no port mapping):
 
 ```bash
 docker run --rm -i \
-  -e DASHBOARD_URL=https://dashboard-api.everstake.one \
+  -e DASHBOARD_URL=https://your-dashboard-api-host \
   -e MCP_TRANSPORT=stdio \
   everstake-mcp
 ```
@@ -99,7 +99,7 @@ Start the container:
 
 ```bash
 docker run --rm -p 8080:8080 \
-  -e DASHBOARD_URL=https://dashboard-api.everstake.one \
+  -e DASHBOARD_URL=https://your-dashboard-api-host \
   -e DASHBOARD_API_KEY=<key> \
   everstake-mcp
 ```

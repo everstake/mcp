@@ -104,7 +104,7 @@ func (s *MCPServer) StakingCalculator(ctx context.Context, _ *sdkmcp.CallToolReq
 	annualRewards := input.Amount * (apr / percentDivisor)
 	monthlyRewards := annualRewards / monthsPerYear
 
-	stakingURL := fmt.Sprintf("https://stake.everstake.one/dashboard/stake/%s/", strings.ToLower(chain.Chain))
+	stakingURL := fmt.Sprintf("https://stake.everstake.com/dashboard/stake/%s/", strings.ToLower(chain.Chain))
 
 	response := StakingCalculatorResponse{
 		Network:                 chain.Chain,
