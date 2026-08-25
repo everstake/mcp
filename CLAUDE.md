@@ -41,7 +41,7 @@ internal/
     middleware/
       ratelimit.go              rate limiting middleware
 pkg/
-  everstake/dashboard/          HTTP client for dashboard-api.everstake.one
+  everstake/dashboard/          HTTP client for dashboard-api.everstake.com
     dashboard.go                Dashboard client, base HTTP methods
     chains.go                   Chain types and API endpoints
     datafeed.go                 Data feed types and API endpoints
@@ -131,7 +131,7 @@ newJsonResult(obj)  → StructuredContent: map[string]any{"data": obj}  // must 
 | Var | Default | Required |
 |---|---|---|
 | `PORT` | `8080` | no (http mode only) |
-| `DASHBOARD_URL` | `https://dashboard-api.everstake.one` | yes |
+| `DASHBOARD_URL` | `https://dashboard-api.everstake.com` | yes |
 | `MCP_TRANSPORT` | `http` | no (`http` or `stdio`) |
 | `GIN_MODE` | — | no (set to `release` in Dockerfile) |
 
