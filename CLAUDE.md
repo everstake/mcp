@@ -19,7 +19,7 @@ MCP server exposing Everstake data to AI agents. Built in Go using the official 
 | Config | `github.com/caarlos0/env` — env vars, no file |
 | Cache | `github.com/patrickmn/go-cache` — in-memory, 10 min TTL |
 | Logging | `github.com/sirupsen/logrus` |
-| Go version | 1.26.1 |
+| Go version | 1.27.3 |
 
 ---
 
@@ -50,7 +50,7 @@ pkg/
     log.go                      logrus wrapper
 mcp.go                          embed tools.yaml, Version, ServiceName, DashboardCacheTtl consts
 tools.yaml                      tool definitions (name derived from map key, not field)
-Dockerfile                      multi-stage, golang:1.26.1-alpine builder + alpine:3.21 runtime
+Dockerfile                      multi-stage, golang:1.27.3-alpine builder + alpine:3.21 runtime
 Makefile                        build automation (lint)
 ```
 
@@ -151,7 +151,7 @@ Linting uses `.golangci.yml` configuration in the project root.
 
 ## Dockerfile
 
-Two-stage: `golang:1.26.1-alpine` builder → `alpine:3.21` runtime.
+Two-stage: `golang:1.27.3-alpine` builder → `alpine:3.21` runtime.
 `CGO_ENABLED=0` — no C deps.
 `-ldflags="-s -w"` — strips debug symbols.
 `ca-certificates` only runtime dep (outbound HTTPS to dashboard API).

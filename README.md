@@ -28,7 +28,7 @@ MCP server exposing Everstake staking data and company information to AI agents.
 
 ### Prerequisites
 
-- Go 1.26.1+
+- Go 1.27.3+
 - Environment variable `DASHBOARD_URL` set (required)
 
 ### Local
